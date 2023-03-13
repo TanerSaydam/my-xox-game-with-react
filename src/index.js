@@ -9,6 +9,7 @@ function XoxGameComponent(){
   const [mark, setMark] = useState("X");
   const [message, setMessage] = useState("");
   const [isGameFinish, setIsGameFinish] = useState(false);
+  const [gameMove, setGameMove] = useState([]);
 
   useEffect(()=> {
     newGame();
@@ -29,6 +30,7 @@ function XoxGameComponent(){
     setIsGameFinish(false);
     setMark("X");
     setMessage("Hamle Sırası: " + mark);
+    setGameMove([])
   }
 
   const markGame = (index) => {
@@ -37,7 +39,7 @@ function XoxGameComponent(){
     if(newGames[index] == ""){
       newGames[index] = mark;
       setGames(newGames);
-
+      setGameMove((val) => [...val, newGames])      
       let e = isMoveFinish(newGames);
       if(e){
         setMessage("Oyun berabere");
@@ -121,6 +123,10 @@ function XoxGameComponent(){
     return true;
   }
 
+  const setThatGameMove = (game) => {
+    setGames(game);
+  }
+
   return(
     <>
     <div className='container text-center'>
@@ -141,6 +147,11 @@ function XoxGameComponent(){
           </div>
         ))}
       </div>
+      <hr/>
+      {gameMove.map((game, index) => (
+          <button onClick={()=> setThatGameMove(game)} className='btn btn-primary mx-2 mt-2' key={index}>{index + 1}. Hamle</button>
+          
+        ))}
     </div>
     </>
   )
